@@ -35,14 +35,15 @@
     wget
     firefox-devedition-bin
     google-chrome
-    pidgin
     gnome3.caribou # should come with gnome 3 but doesn't
+    gnome3.polari
     sublime3 vim
     git clang gcc
     zsh nix-zsh-completions
     numix-solarized-gtk-theme
     mpv
     transmission
+    libreoffice-fresh
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
