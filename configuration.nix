@@ -10,6 +10,17 @@
       ./hardware-configuration.nix
     ];
 
+  # Pulseaudio
+  hardware = {
+    pulseaudio.enable=true;
+    cpu.intel.updateMicrocode = true;
+    enableAllFirmware = true;
+  };
+  boot.extraModprobeConfig = ''
+    options snd_soc_sst_bdw_rt5677_mach index=0
+    options snd-hda-intel index=1
+  '';
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -33,17 +44,19 @@
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
     wget
-    firefox-devedition-bin
     google-chrome
+    gnome3.gnome_session
     gnome3.caribou # should come with gnome 3 but doesn't
     gnome3.polari
     sublime3 vim
     git clang gcc
     zsh nix-zsh-completions
     numix-solarized-gtk-theme
+    numix-icon-theme arc-icon-theme elementary-icon-theme
     mpv
-    transmission
+    transmission transmission_gtk
     libreoffice-fresh
+    pavucontrol
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -58,9 +71,9 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Open ports in the firewall to connect to chromecasts.
+  networking.firewall.allowedTCPPorts = [ 8008 8009 ];
+  networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 61000;} ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -70,6 +83,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.layout = "gb";
+  services.xserver.xkbModel = "chromebook";
   # services.xserver.xkbOptions = "eurosign:e";
 
   # Enable touchpad support.
@@ -80,8 +94,12 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome3.enable = true;
 
+  # Shell
+  environment.shells = [
+    "/run/current-system/sw/bin/zsh"
+  ];
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.extraUsers.pierrec = {
+  users.extraUsers.pierre = {
     isNormalUser = true;
     home = "/home/pierrec";
     description = "Pierre Chevalier";
