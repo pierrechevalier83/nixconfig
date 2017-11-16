@@ -10,6 +10,24 @@
       ./hardware-configuration.nix
     ];
 
+  # Fonts
+  fonts = {
+    fonts = with pkgs; [
+      dejavu_fonts
+      source-code-pro
+      source-sans-pro
+      source-serif-pro
+    ];
+    fontconfig = {
+      penultimate.enable = false;
+      defaultFonts = {
+        monospace = [ "Source Code Pro" ];
+        sansSerif = [ "Source Sans Pro" ];
+        serif     = [ "Source Serif Pro" ];
+      };
+    };
+  };
+
   # Pulseaudio
   hardware = {
     pulseaudio.enable=true;
@@ -50,19 +68,30 @@
     gnome3.polari
     sublime3 vim
     git clang gcc
-    zsh nix-zsh-completions
+    zsh
+    nix-zsh-completions
+    zsh-git-prompt
+    deer
     numix-solarized-gtk-theme
     numix-icon-theme arc-icon-theme elementary-icon-theme
     mpv
     transmission transmission_gtk
     libreoffice-fresh
     pavucontrol
+    pciutils
+    iw
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
-  programs.zsh.enable = true;
-  programs.zsh.enableCompletion = true;
+
+  # Zsh configuration
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    syntaxHighlighting.enable = true;
+    enableAutosuggestions = true;
+  };
   # programs.mtr.enable = true;
   # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
 
@@ -111,6 +140,7 @@
     home = "/home/mariav";
     description = "Maria Viseu";
     extraGroups = [ "wheel" "networkmanager" ];
+    shell = pkgs.zsh;
   };
 
   # This value determines the NixOS release with which your system is to be
@@ -118,5 +148,5 @@
   # servers. You should change this only after NixOS release notes say you
   # should.
   system.stateVersion = "18.03"; # Did you read the comment?
-
+  system.autoUpgrade.enable = true;
 }
