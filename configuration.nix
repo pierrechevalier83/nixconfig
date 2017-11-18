@@ -17,11 +17,14 @@
       source-code-pro
       source-sans-pro
       source-serif-pro
+      font-awesome-ttf
+      powerline-fonts
+      nerdfonts
     ];
     fontconfig = {
       penultimate.enable = false;
       defaultFonts = {
-        monospace = [ "Source Code Pro" ];
+        monospace = [ "Source Code Pro" "nerdfonts"];
         sansSerif = [ "Source Sans Pro" ];
         serif     = [ "Source Serif Pro" ];
       };
@@ -35,7 +38,7 @@
     enableAllFirmware = true;
   };
   boot.extraModprobeConfig = ''
-    options snd_soc_sst_bdw_rt5677_mach index=0
+    options snd_soc_sst_bdw_rt5677_mach index=0ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDY30NGtb3h5lz9a5H9ZnCeUrimUW8bz8KgkQwnB7gdyDzG/Q+MeqVjm+TKEDm3B6BPsCDJYB3r+5bvlBaHsFuA3Saa7FNO/3iM+rJUinjoQFC6JXxcgFVkcCby3723MF5ASGcmuyHEsMdN6G5hRvusQe2gx+pUDvr+dxdm2WYWc1hKYrEyeT/MK072JZd4RaZLnvUYFCw2BdhxYmyzasoF/sdrun3uZ6KLTfzj0sQst+fPJq5yphcXiIlnVPKAKmgVMajO03Vb/i6JLOX668ugla6j4jvUsMmvdu+QkjdgwWEBMY4WuEkhWxg9p7Lotu8rfYQlTQXpwwiVplLDTI0n pierre@pixel
     options snd-hda-intel index=1
   '';
 
@@ -61,17 +64,23 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
+    avahi
+    exa
     wget
+    gutenprint
     google-chrome
     gnome3.gnome_session
     gnome3.caribou # should come with gnome 3 but doesn't
     gnome3.polari
-    sublime3 vim
+    sublime3
+    neovim
+    vim_configurable
     git clang gcc
     zsh
     nix-zsh-completions
     zsh-git-prompt
     deer
+    firefox-bin
     numix-solarized-gtk-theme
     numix-icon-theme arc-icon-theme elementary-icon-theme
     mpv
@@ -80,6 +89,32 @@
     pavucontrol
     pciutils
     iw
+    # Vim config
+    (
+        with import <nixpkgs> {};
+        vim_configurable.customize {
+        name = "nvim";
+        vimrcConfig.customRC = ''
+            set expandtab
+            set shiftwidth=4
+            set softtabstop=4
+            set shiftround
+            set clipboard=unnamed
+            set list
+            set listchars=...
+        '';
+        vimrcConfig.vam.knownPlugins = pkgs.vimPlugins;
+        vimrcConfig.vam.pluginDictionaries = [
+          { names = [
+            "Syntastic"
+            "ctrlp-vim"
+            "vim-nix"
+            "YouCompleteMe"
+            "clang_complete"
+            "vim-markdown"
+          ]; }
+        ]; }
+    )
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -91,23 +126,33 @@
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     enableAutosuggestions = true;
+    promptInit = "POWERLEVEL9K_MODE=nerdfont-complete;\nsource ${pkgs.zsh-powerlevel9k}/share/zsh-powerlevel9k/powerlevel9k.zsh-theme";
   };
   # programs.mtr.enable = true;
   # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
+
+  # Aliases
+  environment.shellAliases = {
+    "ls" = "exa";
+    "vim" = "nvim";
+  };
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  # Open ports in the firewall to connect to chromecasts.
-  networking.firewall.allowedTCPPorts = [ 8008 8009 ];
+  # Open ports in the firewall to connect to chromecasts. 631 
+  networking.firewall.allowedTCPPorts = [ 631 8008 8009 631 ];
+  networking.firewall.allowedUDPPorts = [ 631 ];
   networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 61000;} ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
   # Enable CUPS to print documents.
+  services.avahi.enable = true;
   services.printing.enable = true;
+  services.printing.drivers = [ pkgs.gutenprint ];
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -130,7 +175,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.pierre = {
     isNormalUser = true;
-    home = "/home/pierrec";
+    home = "/home/pierre";
     description = "Pierre Chevalier";
     extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.zsh;
