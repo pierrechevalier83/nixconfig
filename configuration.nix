@@ -13,12 +13,9 @@
   # Fonts
   fonts = {
     fonts = with pkgs; [
-      dejavu_fonts
       source-code-pro
       source-sans-pro
       source-serif-pro
-      font-awesome-ttf
-      powerline-fonts
       nerdfonts
     ];
     fontconfig = {
@@ -84,7 +81,7 @@
     numix-solarized-gtk-theme
     numix-icon-theme arc-icon-theme elementary-icon-theme
     mpv
-    transmission transmission_gtk
+    transmission_gtk
     libreoffice-fresh
     pavucontrol
     pciutils
