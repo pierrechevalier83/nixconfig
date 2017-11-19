@@ -35,7 +35,7 @@
     enableAllFirmware = true;
   };
   boot.extraModprobeConfig = ''
-    options snd_soc_sst_bdw_rt5677_mach index=0ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDY30NGtb3h5lz9a5H9ZnCeUrimUW8bz8KgkQwnB7gdyDzG/Q+MeqVjm+TKEDm3B6BPsCDJYB3r+5bvlBaHsFuA3Saa7FNO/3iM+rJUinjoQFC6JXxcgFVkcCby3723MF5ASGcmuyHEsMdN6G5hRvusQe2gx+pUDvr+dxdm2WYWc1hKYrEyeT/MK072JZd4RaZLnvUYFCw2BdhxYmyzasoF/sdrun3uZ6KLTfzj0sQst+fPJq5yphcXiIlnVPKAKmgVMajO03Vb/i6JLOX668ugla6j4jvUsMmvdu+QkjdgwWEBMY4WuEkhWxg9p7Lotu8rfYQlTQXpwwiVplLDTI0n pierre@pixel
+    options snd_soc_sst_bdw_rt5677_mach index=0
     options snd-hda-intel index=1
   '';
 
