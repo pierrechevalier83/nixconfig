@@ -67,7 +67,6 @@
     gutenprint
     google-chrome
     gnome3.gnome_session
-    gnome3.caribou # should come with gnome 3 but doesn't
     gnome3.polari
     sublime3
     neovim
@@ -79,7 +78,9 @@
     deer
     firefox-bin
     numix-solarized-gtk-theme
-    numix-icon-theme arc-icon-theme elementary-icon-theme
+    numix-icon-theme
+    arc-icon-theme
+    elementary-icon-theme
     mpv
     transmission_gtk
     libreoffice-fresh
@@ -140,11 +141,11 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall to connect to chromecasts. 631 
-  networking.firewall.allowedTCPPorts = [ 631 8008 8009 631 ];
-  networking.firewall.allowedUDPPorts = [ 631 ];
-  networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 61000;} ];
+  #networking.firewall.allowedTCPPorts = [ 631 8008 8009 631 ];
+  #networking.firewall.allowedUDPPorts = [ 631 ];
+  #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 61000;} ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # Enable CUPS to print documents.
   services.avahi.enable = true;
@@ -170,9 +171,9 @@
     "/run/current-system/sw/bin/zsh"
   ];
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.extraUsers.pierre = {
+  users.extraUsers.pierrec = {
     isNormalUser = true;
-    home = "/home/pierre";
+    home = "/home/pierrec";
     description = "Pierre Chevalier";
     extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.zsh;
