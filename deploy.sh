@@ -1,4 +1,6 @@
 #!/bin/sh
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-sudo cp ${SCRIPTPATH}/*.nix /etc/nixos/
+for nix_file in ${SCRIPTPATH}/*.nix; do
+  sudo cp ${nix_file} /etc/nixos/
+done

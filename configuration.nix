@@ -8,36 +8,9 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./fonts.nix
+      ./samus.nix
     ];
-
-  # Fonts
-  fonts = {
-    fonts = with pkgs; [
-      source-code-pro
-      source-sans-pro
-      source-serif-pro
-      nerdfonts
-    ];
-    fontconfig = {
-      penultimate.enable = false;
-      defaultFonts = {
-        monospace = [ "Source Code Pro" "nerdfonts"];
-        sansSerif = [ "Source Sans Pro" ];
-        serif     = [ "Source Serif Pro" ];
-      };
-    };
-  };
-
-  # Pulseaudio
-  hardware = {
-    pulseaudio.enable=true;
-    cpu.intel.updateMicrocode = true;
-    enableAllFirmware = true;
-  };
-  boot.extraModprobeConfig = ''
-    options snd_soc_sst_bdw_rt5677_mach index=0
-    options snd-hda-intel index=1
-  '';
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
