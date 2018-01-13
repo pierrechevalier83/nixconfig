@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       ./fonts.nix
       ./samus.nix
+      ./locales.nix
     ];
 
   # Latest kernel (obviously)
@@ -21,16 +22,6 @@
 
   networking.hostName = "pixel"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Select internationalisation properties.
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "uk";
-    defaultLocale = "en_GB.UTF-8";
-  };
-
-  # Set your time zone.
-  time.timeZone = "Europe/London";
 
   # For sublime and others
   nixpkgs.config.allowUnfree = true;
@@ -144,7 +135,7 @@
   services.xserver.libinput.enable = true;
   services.xserver.libinput.clickMethod = "buttonareas";
 
-  # Enable the KDE Desktop Environment.
+  # Enable the Gnome Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome3.enable = true;
 
