@@ -12,6 +12,9 @@
       ./samus.nix
     ];
 
+  # Latest kernel (obviously)
+  boot.kernelPackages = pkgs.linuxPackages_4_14;
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -34,6 +37,7 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
+    vlc
     avahi
     exa
     wget
@@ -60,6 +64,11 @@
     pavucontrol
     pciutils
     iw
+    cmake
+    boost
+    clang
+    llvm
+    ninja
     # Vim config
     (
         with import <nixpkgs> {};
